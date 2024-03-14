@@ -2,7 +2,6 @@ import React, { useEffect, useState, useCallback } from "react";
 import { MovieCard } from "../../components/common/MovieCard";
 import {
   Box,
-  Container,
   FormControl,
   Grid,
   IconButton,
@@ -55,7 +54,7 @@ const Movies = () => {
   }, []);
 
   return (
-    <Container maxWidth="xl">
+    <>
       <h1> Movies List</h1>
       <Box display="flex" justifyContent="end" mb={4}>
         <Box display="flex">
@@ -89,7 +88,7 @@ const Movies = () => {
           <MovieCard key={movie.id} movie={movie} />
         ))}
       </Grid>
-    </Container>
+    </>
   );
 };
 
