@@ -1,6 +1,7 @@
 import React, { useEffect, useState, useCallback } from "react";
 import {
   Box,
+  Paper,
   FormControl,
   Grid,
   IconButton,
@@ -9,18 +10,22 @@ import {
   MenuItem,
   OutlinedInput,
   Select,
+  BottomNavigation,
+  BottomNavigationAction,
 } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
 import { MovieCard } from "../../components/common/MovieCard";
 import axios, { API } from "../../config/axios";
 import useErrorsHandler from "../../hooks/useErrorHandler";
-
+import FavoriteIcon from "@mui/icons-material/Favorite";
+import MovieIcon from "@mui/icons-material/Movie";
 const Movies = () => {
   // States
   const [movies, setMovies] = useState([]);
   const [filteredMovies, setFilteredMovies] = useState([]);
   const [searchText, setSearchText] = useState("");
   const [sortOption, setSortOption] = useState("");
+  const [selectedTab, setSelectedTab] = React.useState(0);
 
   // Hooks
   const handleErrorResponse = useErrorsHandler();
@@ -73,6 +78,15 @@ const Movies = () => {
     getMoviesList();
   }, []);
 
+  useEffect(() => {
+    if (selectedTab === 1) {
+      const favorites = movies.filter((movie) => movie.favorite);
+      setFilteredMovies(favorites);
+    } else {
+      setFilteredMovies(movies);
+    }
+  }, [selectedTab, movies]);
+
   return (
     <>
       <h1> Movies List</h1>
@@ -110,12 +124,30 @@ const Movies = () => {
           </Select>
         </FormControl>
       </Box>
-
+      {selectedTab === 1 && filteredMovies.length === 0 && (
+        <Box mt={12}>
+          <center>
+            <p>you don't have any Movie in your list, you can add one from</p>
+          </center>
+        </Box>
+      )}
       <Grid container spacing={4}>
         {filteredMovies.map((movie) => (
           <MovieCard key={movie.id} movie={movie} />
         ))}
       </Grid>
+      <Paper sx={{ zIndex: 1, position: "fixed", bottom: 0, left: 0, right: 0 }} elevation={3}>
+        <BottomNavigation
+          showLabels
+          value={selectedTab}
+          onChange={(event, newValue) => {
+            setSelectedTab(newValue);
+          }}
+        >
+          <BottomNavigationAction label="Now Playing" icon={<MovieIcon />} />
+          <BottomNavigationAction label="Favorites" icon={<FavoriteIcon />} />
+        </BottomNavigation>
+      </Paper>
     </>
   );
 };
