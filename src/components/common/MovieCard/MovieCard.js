@@ -1,5 +1,5 @@
 import React from "react";
-import StyledBox from "./movieCard.style";
+import StyledBox from "./MovieCard.style";
 
 const MovieCard = () => {
   return (
