@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useCallback } from 'react';
 import { MovieCard } from '../../components/common/MovieCard';
-import { Box } from '@mui/material';
+import { Container, Grid } from '@mui/material';
 import axios, { API } from '../../config/axios';
 import useErrorsHandler from '../../hooks/useErrorHandler';
 
@@ -27,15 +27,17 @@ const Movies = () => {
   // UseEffects
   useEffect(() => {
     getMoviesList();
-  }, [getMoviesList]);
+  }, []);
 
-  return (
-    <Box>
+  return(
+    <Container maxWidth="xl">
       <h1> Movies List</h1>
-      {movies?.map((movie) => (
-        <MovieCard movie={movie} key={movie.id} />
-      ))}
-    </Box>
+      <Grid container spacing={4}>
+        {movies.map((movie) => (
+          <MovieCard key={movie.id} movie={movie} />
+        ))}
+      </Grid>
+    </Container>
   );
 };
 
